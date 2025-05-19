@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Download } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { Label } from '@/components/ui/label'; // Added import
 
 const submissionData = [
   { type: 'Fertilizer License', count: 120 },
