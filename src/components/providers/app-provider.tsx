@@ -9,13 +9,17 @@ import { useToast } from "@/hooks/use-toast";
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [activeTab, setActiveTab] = useState<string>('dashboard');
+  const [activeTab, setActiveTab] = useState<string>('agri-shield-dashboard'); // Default to new main dashboard
   const [userRole, setUserRole] = useState<UserRole>(USER_ROLES.DAO);
   
   const [inspectionTasks, setInspectionTasks] = useState<InspectionTask[]>([]);
   const [seizures, setSeizures] = useState<Seizure[]>([]);
   const [labSamples, setLabSamples] = useState<LabSample[]>([]);
   const [firCases, setFIRCases] = useState<FIRCase[]>([]);
+  
+  // State for Forms Portal integration
+  const [selectedFormType, setSelectedFormType] = useState<string | null>(null);
+  
   const { toast } = useToast();
 
   const addInspectionTask = useCallback((task: Omit<InspectionTask, 'id' | 'status'>) => {
@@ -52,9 +56,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     if (allowedTabs.length > 0 && !allowedTabs.find(tab => tab.id === activeTab)) {
-      setActiveTab(allowedTabs[0].id);
+      const firstVisibleTab = allowedTabs.find(tab => !tab.hiddenInSidebar);
+      if (firstVisibleTab) {
+        setActiveTab(firstVisibleTab.id);
+      } else if (allowedTabs.length > 0) {
+         setActiveTab(allowedTabs[0].id); // Fallback to first allowed tab if no visible ones
+      }
     }
   }, [allowedTabs, activeTab, setActiveTab]);
+
+  const navigateToForm = useCallback((formType: string) => {
+    setSelectedFormType(formType);
+    setActiveTab('form-renderer');
+  }, [setSelectedFormType, setActiveTab]);
 
 
   const contextValue = useMemo(() => ({
@@ -74,6 +88,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     firCases,
     addFIRCase,
     updateFIRCaseStatus,
+    selectedFormType,
+    setSelectedFormType,
+    navigateToForm,
   }), [
     activeTab, 
     userRole,
@@ -89,6 +106,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     firCases,
     addFIRCase,
     updateFIRCaseStatus,
+    selectedFormType,
+    setSelectedFormType,
+    navigateToForm,
   ]);
 
   return (

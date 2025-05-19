@@ -1,5 +1,7 @@
 import type { TabDefinition, ProductDatabase, UserRoles } from '@/lib/types';
-import { BarChart3, Calendar, Camera, Package, Scale, Building, FileSearch, ShieldAlert, Timer, FileText } from 'lucide-react';
+import { 
+  BarChart3, Calendar, Camera, Package, Scale, Building, FileSearch, ShieldAlert, Timer, FileText, LayoutDashboard, Archive, Settings2, BarChart2, ClipboardList
+} from 'lucide-react';
 
 export const USER_ROLES: UserRoles = {
   FIELD_OFFICER: 'Field Officer',
@@ -8,15 +10,70 @@ export const USER_ROLES: UserRoles = {
   LAB_COORDINATOR: 'Lab Coordinator',
   HQ_MONITORING: 'HQ Monitoring Cell',
   DISTRICT_ADMIN: 'District Admin',
+  FARMER: 'Farmer', // Added for form portal context
+  DEALER: 'Dealer/Retailer' // Added for form portal context
 };
 
 export const TABS: TabDefinition[] = [
+  // Agri Shield Core Modules (adapted from CropSafeAI)
   { 
-    id: 'dashboard', 
-    icon: BarChart3, 
-    text: 'Dashboard',
-    ariaLabel: 'View monitoring dashboard',
+    id: 'agri-shield-dashboard', 
+    icon: LayoutDashboard, 
+    text: 'Agri Shield Dashboard',
+    ariaLabel: 'View Agri Shield monitoring dashboard',
     allowedRoles: [USER_ROLES.DAO, USER_ROLES.HQ_MONITORING, USER_ROLES.DISTRICT_ADMIN]
+  },
+  // Forms Portal Modules
+  {
+    id: 'forms-dashboard',
+    icon: BarChart2, // Changed from BarChart3 to differentiate
+    text: 'Forms Dashboard',
+    ariaLabel: 'View Forms Dashboard',
+    allowedRoles: [USER_ROLES.DAO, USER_ROLES.FIELD_OFFICER, USER_ROLES.FARMER, USER_ROLES.DEALER, USER_ROLES.HQ_MONITORING, USER_ROLES.DISTRICT_ADMIN]
+  },
+  {
+    id: 'forms-catalog',
+    icon: FileText,
+    text: 'Forms Catalog',
+    ariaLabel: 'Browse and select forms',
+    allowedRoles: [USER_ROLES.DAO, USER_ROLES.FIELD_OFFICER, USER_ROLES.FARMER, USER_ROLES.DEALER, USER_ROLES.HQ_MONITORING, USER_ROLES.DISTRICT_ADMIN]
+  },
+  {
+    id: 'form-renderer', // This might be hidden from sidebar but navigable
+    icon: FileText, // Placeholder, might not be shown
+    text: 'Fill Form',
+    ariaLabel: 'Fill out a selected form',
+    allowedRoles: [USER_ROLES.DAO, USER_ROLES.FIELD_OFFICER, USER_ROLES.FARMER, USER_ROLES.DEALER, USER_ROLES.HQ_MONITORING, USER_ROLES.DISTRICT_ADMIN],
+    hiddenInSidebar: true, // Custom property to hide from sidebar
+  },
+  {
+    id: 'form-submissions',
+    icon: Archive,
+    text: 'Form Submissions',
+    ariaLabel: 'View and manage form submissions',
+    allowedRoles: [USER_ROLES.DAO, USER_ROLES.FIELD_OFFICER, USER_ROLES.FARMER, USER_ROLES.DEALER, USER_ROLES.HQ_MONITORING, USER_ROLES.DISTRICT_ADMIN]
+  },
+  {
+    id: 'form-reports',
+    icon: ClipboardList,
+    text: 'Form Reports',
+    ariaLabel: 'Generate and view reports from form data',
+    allowedRoles: [USER_ROLES.DAO, USER_ROLES.HQ_MONITORING, USER_ROLES.DISTRICT_ADMIN]
+  },
+  // AI and Operational Modules (from CropSafeAI, adjusted)
+  {
+    id: 'crop-health-report',
+    icon: ShieldAlert,
+    text: 'AI Crop Health',
+    ariaLabel: 'Generate AI Crop Health Report',
+    allowedRoles: [USER_ROLES.DAO, USER_ROLES.HQ_MONITORING, USER_ROLES.FIELD_OFFICER]
+  },
+  {
+    id: 'planting-schedule',
+    icon: Timer,
+    text: 'AI Planting Schedule',
+    ariaLabel: 'Create AI Planting Schedule',
+    allowedRoles: [USER_ROLES.DAO, USER_ROLES.FIELD_OFFICER, USER_ROLES.DISTRICT_ADMIN, USER_ROLES.FARMER]
   },
   { 
     id: 'inspection-planning', 
@@ -43,7 +100,7 @@ export const TABS: TabDefinition[] = [
     id: 'legal-module', 
     icon: Scale, 
     text: 'Legal Module',
-    ariaLabel: 'Legal enforcement',
+    ariaLabel: 'Legal enforcement actions',
     allowedRoles: [USER_ROLES.LEGAL_OFFICER, USER_ROLES.DAO]
   },
   { 
@@ -54,25 +111,18 @@ export const TABS: TabDefinition[] = [
     allowedRoles: [USER_ROLES.LAB_COORDINATOR, USER_ROLES.DAO]
   },
   { 
-    id: 'report-audit', 
+    id: 'system-audit', // Renamed from report-audit for clarity
     icon: FileSearch, 
-    text: 'Reports & Audit',
-    ariaLabel: 'View reports and audit logs',
+    text: 'System Audit',
+    ariaLabel: 'View system reports and audit logs',
     allowedRoles: [USER_ROLES.HQ_MONITORING, USER_ROLES.DAO, USER_ROLES.DISTRICT_ADMIN]
   },
   {
-    id: 'crop-health-report',
-    icon: ShieldAlert,
-    text: 'Crop Health Report',
-    ariaLabel: 'Generate AI Crop Health Report',
-    allowedRoles: [USER_ROLES.DAO, USER_ROLES.HQ_MONITORING, USER_ROLES.FIELD_OFFICER]
-  },
-  {
-    id: 'planting-schedule',
-    icon: Timer,
-    text: 'Planting Schedule',
-    ariaLabel: 'Create AI Planting Schedule',
-    allowedRoles: [USER_ROLES.DAO, USER_ROLES.FIELD_OFFICER, USER_ROLES.DISTRICT_ADMIN]
+    id: 'settings',
+    icon: Settings2,
+    text: 'Settings',
+    ariaLabel: 'Manage application settings',
+     allowedRoles: [USER_ROLES.DAO, USER_ROLES.FIELD_OFFICER, USER_ROLES.FARMER, USER_ROLES.DEALER, USER_ROLES.HQ_MONITORING, USER_ROLES.DISTRICT_ADMIN, USER_ROLES.LEGAL_OFFICER, USER_ROLES.LAB_COORDINATOR]
   }
 ];
 
@@ -92,11 +142,6 @@ export const PRODUCT_DATABASE: ProductDatabase = {
         batchFormat: 'UPL-ULA-YYYYMM-XXXXX',
         mrp: { '100g': 650, '500g': 3100 }
       },
-      'Curacron': {
-        activeIngredient: 'Profenofos 50% EC',
-        packaging: ['250ml', '500ml', '1L'],
-        mrp: { '250ml': 480, '500ml': 940, '1L': 1850 }
-      }
     },
     'Bayer': {
       'Confidor': {
@@ -105,24 +150,7 @@ export const PRODUCT_DATABASE: ProductDatabase = {
         hologramFeatures: ['3D hologram', 'Color-changing ink', 'Microtext'],
         mrp: { '50ml': 165, '100ml': 320, '250ml': 785, '500ml': 1550 }
       },
-      'Nativo': {
-        activeIngredient: 'Tebuconazole 50% + Trifloxystrobin 25%',
-        packaging: ['50g', '100g', '200g'],
-        mrp: { '50g': 570, '100g': 1120, '200g': 2200 }
-      }
     },
-    'Syngenta': {
-      'Karate': {
-        activeIngredient: 'Lambda Cyhalothrin 5% EC',
-        packaging: ['100ml', '250ml', '500ml'],
-        mrp: { '100ml': 310, '250ml': 750, '500ml': 1480 }
-      },
-      'Ridomil Gold': {
-        activeIngredient: 'Metalaxyl-M 4% + Mancozeb 64%',
-        packaging: ['250g', '500g', '1kg'],
-        mrp: { '250g': 590, '500g': 1160, '1kg': 2280 }
-      }
-    }
   },
   fertilizers: {
     'IFFCO': {
@@ -133,21 +161,7 @@ export const PRODUCT_DATABASE: ProductDatabase = {
         subsidizedRate: 1350,
         mrp: 1350
       },
-      'NPK 10:26:26': {
-        composition: '10-26-26',
-        packaging: ['50kg'],
-        subsidizedRate: 1470,
-        mrp: 1470
-      }
     },
-    'Coromandel': {
-      'Gromor': {
-        composition: '14-35-14',
-        packaging: ['50kg'],
-        bagColor: 'White with green stripes',
-        mrp: 1520
-      }
-    }
   },
   seeds: {
     'Mahyco': {
@@ -157,12 +171,5 @@ export const PRODUCT_DATABASE: ProductDatabase = {
         mrp: { '450g': 930 }
       }
     },
-    'Nuziveedu': {
-      'Cotton Hybrid': {
-        varieties: ['Bhakti', 'Mallika'],
-        packaging: ['475g'],
-        mrp: { '475g': 980 }
-      }
-    }
   }
 };

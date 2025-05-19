@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'CropSafeAI - Agricultural Workflow Management',
-  description: 'AI-Powered Agricultural Monitoring and Enforcement Platform',
+  title: 'Agri Shield - Agricultural Workflow Management',
+  description: 'AI-Powered Agricultural Portal for Form Management and Insights',
 };
 
 export default function RootLayout({

@@ -7,6 +7,8 @@ export interface UserRoles {
   LAB_COORDINATOR: string;
   HQ_MONITORING: string;
   DISTRICT_ADMIN: string;
+  FARMER: string; 
+  DEALER: string;
 }
 
 export type UserRole = UserRoles[keyof UserRoles];
@@ -17,6 +19,8 @@ export interface TabDefinition {
   text: string;
   ariaLabel: string;
   allowedRoles: UserRole[];
+  hiddenInSidebar?: boolean; 
+  subTabs?: TabDefinition[]; // For potential future nested navigation
 }
 
 export interface ProductDetails {
@@ -88,6 +92,7 @@ export interface FIRCase {
   accused: string;
   location: string;
   status: 'draft' | 'submitted' | 'pending-court' | 'closed';
+  details?: string;
 }
 
 export interface ToastMessage {
@@ -96,21 +101,35 @@ export interface ToastMessage {
   type: 'success' | 'error' | 'info';
 }
 
+// For Form Renderer Module
+export type FormData = Record<string, any>;
+
 export interface AppContextType {
   activeTab: string;
   setActiveTab: (tabId: string) => void;
   userRole: UserRole;
   setUserRole: (role: UserRole) => void;
   allowedTabs: TabDefinition[];
+  
   inspectionTasks: InspectionTask[];
   addInspectionTask: (task: Omit<InspectionTask, 'id' | 'status'>) => void;
+  
   seizures: Seizure[];
   addSeizure: (seizure: Omit<Seizure, 'id' | 'status'>) => void;
   updateSeizureStatus: (seizureId: string, status: Seizure['status']) => void;
+  
   labSamples: LabSample[];
   addLabSample: (sample: Omit<LabSample, 'id' | 'status'>) => void;
   updateLabSampleStatus: (sampleId: string, status: LabSample['status']) => void;
+  
   firCases: FIRCase[];
   addFIRCase: (firCase: Omit<FIRCase, 'id' | 'status'>) => void;
   updateFIRCaseStatus: (caseId: string, status: FIRCase['status']) => void;
+
+  // State for Forms Portal integration
+  selectedFormType: string | null;
+  setSelectedFormType: (formType: string | null) => void;
+  
+  // To handle navigation from catalog to form renderer
+  navigateToForm: (formType: string) => void; 
 }
