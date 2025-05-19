@@ -1,8 +1,9 @@
+
 "use client";
 
 import React from 'react';
 import { useAppContext } from '@/components/providers/app-provider';
-import { Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, SidebarInset } from '@/components/ui/sidebar';
 import { TopHeader } from '@/components/TopHeader';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Image from 'next/image';
@@ -24,7 +25,7 @@ import FormsCatalogModule from '@/components/modules/FormsCatalogModule';
 import FormRendererModule from '@/components/modules/FormRendererModule';
 import FormSubmissionsModule from '@/components/modules/FormSubmissionsModule';
 import FormReportsModule from '@/components/modules/FormReportsModule';
-import FormSettingsModule from '@/components/modules/FormSettingsModule'; // Assuming this is the new settings
+import FormSettingsModule from '@/components/modules/FormSettingsModule';
 
 
 export default function AgriShieldPage() {
@@ -63,7 +64,7 @@ export default function AgriShieldPage() {
         return <FormSubmissionsModule />;
       case 'form-reports':
         return <FormReportsModule />;
-      case 'settings': // Assuming 'settings' tab maps to FormSettingsModule for now
+      case 'settings': 
         return <FormSettingsModule />;
       default:
         return <DashboardModule />; // Fallback to main dashboard
@@ -74,8 +75,8 @@ export default function AgriShieldPage() {
     <div className="flex h-screen bg-background">
       <Sidebar variant="sidebar" collapsible="icon" side="left">
         <SidebarHeader className="p-4 items-center justify-center border-b border-sidebar-border">
-            <Image src="https://placehold.co/120x40.png?text=AgriShield" width={120} height={40} alt="Agri Shield Logo" data-ai-hint="logo agri shield" className="group-data-[collapsible=icon]:hidden"/>
-            <Image src="https://placehold.co/32x32.png?text=AS" width={32} height={32} alt="Agri Shield Icon" data-ai-hint="logo shield" className="hidden group-data-[collapsible=icon]:block"/>
+            <Image src="https://placehold.co/120x40/000000/FFFFFF.png?text=AgriShield" width={120} height={40} alt="Agri Shield Logo" data-ai-hint="logo shield" className="group-data-[collapsible=icon]:hidden"/>
+            <Image src="https://placehold.co/32x32/000000/FFFFFF.png?text=AS" width={32} height={32} alt="Agri Shield Icon" data-ai-hint="logo icon" className="hidden group-data-[collapsible=icon]:block"/>
         </SidebarHeader>
         <ScrollArea className="flex-1">
           <SidebarContent>
@@ -95,7 +96,14 @@ export default function AgriShieldPage() {
             </SidebarMenu>
           </SidebarContent>
         </ScrollArea>
-        {/* Add SidebarFooter if needed */}
+        <SidebarFooter className="p-3 border-t border-sidebar-border text-center">
+          <p className="text-xs text-sidebar-foreground/70 group-data-[collapsible=icon]:hidden">
+            Developed by Dawell Lifescience
+          </p>
+           <p className="text-xs text-sidebar-foreground/70 hidden group-data-[collapsible=icon]:block">
+            DLS
+          </p>
+        </SidebarFooter>
       </Sidebar>
 
       <SidebarInset className="flex flex-col">
