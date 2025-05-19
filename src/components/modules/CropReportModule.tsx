@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from 'react';
@@ -129,7 +130,7 @@ const CropReportModule: React.FC = () => {
                 <FormItem>
                   <FormLabel>Satellite Imagery (URL or Upload)</FormLabel>
                   <FormControl>
-                    <>
+                    <div>
                       <Input 
                         placeholder="Enter image URL or upload" 
                         value={field.value.startsWith('data:image/') ? '(File uploaded)' : field.value}
@@ -149,7 +150,7 @@ const CropReportModule: React.FC = () => {
                         onChange={handleFileChange}
                         className="mt-1"
                       />
-                    </>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
